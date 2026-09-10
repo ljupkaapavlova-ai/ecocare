@@ -1,0 +1,1522 @@
+<!--
+  ECO CARE — editorial rebuild.
+  Structure: index.html + style.css + script.js (no build step, no framework).
+  All copy lives in script.js's `translations` object (EN/SL/HR) and is applied
+  via data-i18n / data-i18n-html / data-i18n-attr-* attributes on load.
+  The text below is the English fallback shown before script.js runs.
+
+  BEFORE DEPLOYING:
+    1. Verify info@ecocare-project.eu is the correct inbox (used by the contact form and mailto link).
+    2. Confirm https://www.instagram.com/ecocare_si_hr/ is correct and live.
+    3. Have a native speaker sanity-check the Slovenian/Croatian copy in script.js.
+-->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ECO CARE — Safe medicines at home, safer for the planet</title>
+<meta name="description" content="Erasmus+ KA210 partnership on safe, environmentally responsible medicine use at home — for pharmacies and for patients and caregivers in Slovenia and Croatia." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ECO CARE — design system */
+
+:root{
+  --bg:#F5F2EA;
+  --surface:#FFFFFF;
+  --surface-2:#EEE9DD;
+  --ink:#14181A;
+  --ink-2:#4A5250;
+  --ink-3:#8A9290;
+  --line:#DBD5C6;
+  --green:#4B6B58;
+  --green-strong:#2E4536;
+  --green-soft:#E3E9E1;
+  --slate:#4C6178;
+  --slate-soft:#E2E7EC;
+  --accent:#A2532A;
+  --accent-soft:#F1E1D2;
+  --focus:#2E4536;
+  --shadow-sm:0 1px 2px rgba(20,24,26,.05), 0 6px 20px -14px rgba(20,24,26,.25);
+  --shadow-md:0 20px 48px -24px rgba(20,24,26,.35);
+  --container:1180px;
+  --measure:700px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#10130F;
+    --surface:#171B17;
+    --surface-2:#1D2320;
+    --ink:#F1EFE6;
+    --ink-2:#C4CBC5;
+    --ink-3:#88918C;
+    --line:#2A3129;
+    --green:#8AB89A;
+    --green-strong:#B7DAC1;
+    --green-soft:#1D2A20;
+    --slate:#93AAC0;
+    --slate-soft:#1C2833;
+    --accent:#E08A52;
+    --accent-soft:#2E2013;
+    --focus:#8AB89A;
+    --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -14px rgba(0,0,0,.6);
+    --shadow-md:0 20px 48px -24px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#10130F; --surface:#171B17; --surface-2:#1D2320;
+  --ink:#F1EFE6; --ink-2:#C4CBC5; --ink-3:#88918C; --line:#2A3129;
+  --green:#8AB89A; --green-strong:#B7DAC1; --green-soft:#1D2A20;
+  --slate:#93AAC0; --slate-soft:#1C2833;
+  --accent:#E08A52; --accent-soft:#2E2013; --focus:#8AB89A;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.4), 0 6px 20px -14px rgba(0,0,0,.6);
+  --shadow-md:0 20px 48px -24px rgba(0,0,0,.7);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-behavior:smooth; }
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Manrope', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+img{ max-width:100%; display:block; }
+h1,h2,h3,h4{ margin:0; text-wrap:balance; }
+p{ margin:0; text-wrap:pretty; }
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:0; cursor:pointer; }
+ul{ margin:0; padding:0; list-style:none; }
+
+::selection{ background:var(--green-soft); color:var(--ink); }
+:focus-visible{ outline:2.5px solid var(--focus); outline-offset:3px; border-radius:3px; }
+
+.serif{ font-family:'Fraunces', ui-serif, Georgia, serif; }
+.mono{ font-family:'IBM Plex Mono', ui-monospace, Menlo, monospace; font-variant-numeric:tabular-nums; }
+
+.skip-link{
+  position:fixed; top:-100px; left:1rem; z-index:999;
+  background:var(--ink); color:var(--bg); padding:.75rem 1.25rem; border-radius:8px;
+  font-weight:600; font-size:.875rem; transition:top .2s var(--ease);
+}
+.skip-link:focus{ top:1rem; }
+
+.container{ max-width:var(--container); margin-inline:auto; padding-inline:clamp(20px,5vw,48px); position:relative; }
+.measure{ max-width:var(--measure); }
+
+.eyebrow{
+  font-family:'IBM Plex Mono', monospace;
+  font-size:.75rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--green); font-weight:500; display:inline-flex; align-items:center; gap:.6rem;
+}
+.eyebrow::before{ content:""; width:1.4rem; height:1px; background:currentColor; opacity:.6; }
+
+.section{ padding-block:clamp(64px,10vw,128px); position:relative; }
+.section-tight{ padding-block:clamp(40px,6vw,72px); }
+.section-alt{ background:var(--surface-2); }
+.section-head{ margin-bottom:clamp(32px,5vw,56px); max-width:46rem; }
+.section-head h2{ margin-top:.9rem; }
+.hairline{ border-top:1px solid var(--line); }
+
+.h-display{
+  font-family:'Fraunces', ui-serif, Georgia, serif;
+  font-weight:500;
+  line-height:1.02;
+  letter-spacing:-.01em;
+  color:var(--ink);
+}
+.h1{ font-size:clamp(2.6rem, 3rem + 3vw, 5.4rem); }
+.h2{ font-size:clamp(2rem, 1.6rem + 2.4vw, 3.4rem); }
+.h3{ font-size:clamp(1.4rem, 1.2rem + 1vw, 1.9rem); }
+
+.lede{ font-size:clamp(1.05rem, 1rem + .4vw, 1.25rem); color:var(--ink-2); }
+
+/* ---------- Nav ---------- */
+.site-nav{
+  position:sticky; top:0; z-index:80;
+  background:color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid transparent;
+  transition:padding .25s var(--ease), border-color .25s var(--ease), background .25s var(--ease);
+}
+.site-nav.is-scrolled{ border-color:var(--line); }
+.nav-row{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:1.35rem; transition:padding .25s var(--ease); }
+.site-nav.is-scrolled .nav-row{ padding-block:.85rem; }
+.brand{ display:flex; align-items:center; gap:.6rem; font-family:'Fraunces', serif; font-weight:600; font-size:1.05rem; letter-spacing:-.01em; flex:none; }
+.brand-mark{ width:1.6rem; height:1.6rem; border-radius:6px; background:linear-gradient(155deg, var(--green) 0%, var(--slate) 100%); flex:none; }
+
+.nav-links{ display:flex; align-items:center; gap:clamp(1.1rem,2vw,2rem); }
+.nav-link{ font-size:.85rem; font-weight:600; color:var(--ink-2); padding:.3rem .1rem; position:relative; white-space:nowrap; }
+.nav-link::after{ content:""; position:absolute; left:0; right:0; bottom:-4px; height:1.5px; background:var(--green); transform:scaleX(0); transform-origin:left; transition:transform .25s var(--ease); }
+.nav-link:hover{ color:var(--ink); }
+.nav-link:hover::after, .nav-link[aria-current="true"]::after{ transform:scaleX(1); }
+.nav-link[aria-current="true"]{ color:var(--ink); }
+
+.nav-right{ display:flex; align-items:center; gap:1rem; }
+
+.lang-switch{ display:flex; align-items:center; gap:.25rem; background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:.2rem; }
+.lang-btn{ font-family:'IBM Plex Mono', monospace; font-size:.7rem; font-weight:600; letter-spacing:.03em; padding:.32rem .6rem; border-radius:999px; color:var(--ink-3); transition:background .15s ease, color .15s ease; }
+.lang-btn:hover{ color:var(--ink); }
+.lang-btn[aria-pressed="true"]{ background:var(--green); color:#fff; }
+
+.menu-toggle{ display:none; align-items:center; gap:.5rem; font-size:.8rem; font-weight:600; }
+.menu-toggle .bars{ width:20px; height:14px; position:relative; }
+.menu-toggle .bars span{ position:absolute; left:0; right:0; height:1.6px; background:currentColor; transition:transform .25s var(--ease), opacity .2s ease, top .25s var(--ease); }
+.menu-toggle .bars span:nth-child(1){ top:0; }
+.menu-toggle .bars span:nth-child(2){ top:6px; }
+.menu-toggle .bars span:nth-child(3){ top:12px; }
+.menu-toggle[aria-expanded="true"] .bars span:nth-child(1){ top:6px; transform:rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .bars span:nth-child(2){ opacity:0; }
+.menu-toggle[aria-expanded="true"] .bars span:nth-child(3){ top:6px; transform:rotate(-45deg); }
+
+.mobile-panel{
+  display:none; position:fixed; inset:0; z-index:70; background:var(--bg);
+  padding:6.5rem 1.5rem 2rem; flex-direction:column; gap:.25rem;
+}
+.mobile-panel.is-open{ display:flex; }
+.mobile-panel a{ font-family:'Fraunces', serif; font-size:1.9rem; padding:.65rem 0; border-bottom:1px solid var(--line); }
+.mobile-panel .lang-switch{ align-self:flex-start; margin-top:1.5rem; }
+
+@media (max-width:860px){
+  .nav-links{ display:none; }
+  .menu-toggle{ display:inline-flex; }
+}
+
+/* ---------- Buttons ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+  font-weight:700; font-size:.9rem; letter-spacing:.01em;
+  padding:1rem 1.6rem; border-radius:2px; min-height:48px;
+  transition:transform .2s var(--ease), background-color .2s ease, color .2s ease, box-shadow .2s ease;
+  position:relative; overflow:hidden;
+}
+.btn-primary{ background:var(--ink); color:var(--bg); }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.btn-primary:active{ transform:translateY(0); }
+.btn-line{ background:transparent; color:var(--ink); box-shadow:inset 0 0 0 1.4px var(--line); }
+.btn-line:hover{ box-shadow:inset 0 0 0 1.4px var(--ink); transform:translateY(-2px); }
+.btn-arrow{ transition:transform .2s var(--ease); }
+.btn:hover .btn-arrow{ transform:translateX(4px); }
+
+.actions{ display:flex; flex-wrap:wrap; gap:.85rem; }
+
+/* ---------- Hero ---------- */
+.hero{ padding-top:clamp(56px,9vw,108px); padding-bottom:clamp(56px,8vw,96px); }
+.hero-grid{ display:grid; grid-template-columns:1fr; gap:2.5rem; }
+.hero-meta{ display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom:1.6rem; }
+.status-chip{
+  display:inline-flex; align-items:center; gap:.5rem; font-family:'IBM Plex Mono', monospace;
+  font-size:.7rem; font-weight:600; letter-spacing:.03em; padding:.35rem .7rem;
+  border-radius:999px; background:var(--green-soft); color:var(--green-strong);
+}
+.status-dot{ width:.4rem; height:.4rem; border-radius:999px; background:currentColor; }
+.status-dot.pulse{ animation:pulse 2.4s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
+
+.hero h1{ margin-bottom:1.6rem; }
+.hero h1 em{ font-style:italic; color:var(--green-strong); }
+.hero-sub{ max-width:36rem; margin-bottom:2rem; }
+
+.masthead{
+  display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap;
+  padding:1.4rem 1.6rem; background:var(--surface); border:1px solid var(--line);
+  border-radius:4px; margin-top:clamp(2.5rem,5vw,4rem);
+}
+.masthead img{ height:64px; width:auto; }
+.masthead-label{ font-family:'IBM Plex Mono', monospace; font-size:.68rem; color:var(--ink-3); letter-spacing:.05em; }
+
+/* ---------- Reveal ---------- */
+[data-reveal]{ opacity:0; transform:translateY(22px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+[data-reveal].is-visible{ opacity:1; transform:none; }
+[data-reveal-group] > *{ opacity:0; transform:translateY(18px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+[data-reveal-group].is-visible > *{ opacity:1; transform:none; }
+[data-reveal-group].is-visible > *:nth-child(1){ transition-delay:.02s; }
+[data-reveal-group].is-visible > *:nth-child(2){ transition-delay:.08s; }
+[data-reveal-group].is-visible > *:nth-child(3){ transition-delay:.14s; }
+[data-reveal-group].is-visible > *:nth-child(4){ transition-delay:.2s; }
+[data-reveal-group].is-visible > *:nth-child(5){ transition-delay:.26s; }
+[data-reveal-group].is-visible > *:nth-child(6){ transition-delay:.32s; }
+
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+  [data-reveal], [data-reveal-group] > *{ opacity:1; transform:none; }
+}
+
+/* ---------- Problem sequence ---------- */
+.problem-list{ border-top:1px solid var(--line); }
+.problem-item{
+  display:grid; grid-template-columns:5rem 1fr; gap:1.5rem;
+  padding-block:clamp(1.6rem,3vw,2.4rem); border-bottom:1px solid var(--line);
+  align-items:baseline;
+}
+.problem-num{ font-family:'IBM Plex Mono', monospace; font-size:1.1rem; color:var(--ink-3); }
+.problem-cat{ font-family:'IBM Plex Mono', monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--green); margin-bottom:.5rem; display:block; }
+.problem-item h3{ margin-bottom:.6rem; }
+.problem-item p{ color:var(--ink-2); max-width:42rem; }
+
+/* ---------- Pharmacy tabs ---------- */
+.toolkit{ display:grid; grid-template-columns:14rem 1fr; gap:clamp(2rem,4vw,4rem); align-items:start; }
+.tablist{ display:flex; flex-direction:column; gap:.25rem; position:sticky; top:6.5rem; }
+.tab-btn{
+  text-align:left; padding:1rem 1.1rem; border-radius:4px; display:flex; gap:.9rem; align-items:flex-start;
+  border-left:2px solid transparent; transition:border-color .2s ease, background .2s ease;
+}
+.tab-btn .num{ font-family:'IBM Plex Mono', monospace; font-size:.75rem; color:var(--ink-3); flex:none; padding-top:.15rem; }
+.tab-btn .label{ font-weight:700; font-size:.95rem; color:var(--ink-2); }
+.tab-btn:hover{ background:var(--surface-2); }
+.tab-btn[aria-selected="true"]{ border-left-color:var(--green); background:var(--surface-2); }
+.tab-btn[aria-selected="true"] .label{ color:var(--ink); }
+.tab-btn[aria-selected="true"] .num{ color:var(--green); }
+
+.panels{ position:relative; }
+.pharma-panel{ padding:.4rem 0 1rem; }
+.pharma-panel .big-num{ font-family:'Fraunces', serif; font-size:clamp(2.2rem,4vw,3.4rem); color:var(--green-soft); line-height:1; margin-bottom:1rem; }
+.pharma-panel h3{ margin-bottom:1rem; max-width:28rem; }
+.pharma-panel p{ color:var(--ink-2); max-width:38rem; font-size:1.05rem; }
+
+@media (min-width:768px){
+  .pharma-panel{ display:none; }
+  .pharma-panel.is-active{ display:block; }
+}
+@media (max-width:767px){
+  .tablist{ display:none; }
+  .toolkit{ grid-template-columns:1fr; }
+  .panels{ display:flex; flex-direction:column; gap:2.5rem; }
+  .pharma-panel{ border-top:1px solid var(--line); padding-top:1.6rem; }
+}
+
+/* ---------- Patient rules ---------- */
+.rules{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+.rule{ background:var(--surface); padding:1.6rem; display:flex; flex-direction:column; gap:.75rem; min-height:170px; }
+.rule .num{ font-family:'IBM Plex Mono', monospace; font-size:.75rem; color:var(--ink-3); }
+.rule h4{ font-family:'Fraunces', serif; font-weight:500; font-size:1.15rem; }
+.rule p{ font-size:.9rem; color:var(--ink-2); }
+.rule.why{ background:var(--green); color:#fff; justify-content:center; }
+.rule.why h4{ color:#fff; }
+.rule.why p{ color:color-mix(in srgb, #fff 82%, transparent); }
+
+/* ---------- Why pause ---------- */
+.pause{ display:flex; align-items:center; justify-content:center; text-align:center; padding-block:clamp(80px,14vw,160px); }
+.pause blockquote{ font-family:'Fraunces', serif; font-style:italic; font-weight:500; font-size:clamp(1.7rem, 1.2rem + 3.4vw, 3.2rem); line-height:1.18; max-width:52rem; color:var(--ink); }
+
+/* ---------- Evidence ---------- */
+.stat-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-bottom:clamp(2rem,4vw,3rem); }
+.stat-tile{ background:var(--surface); padding:clamp(1.4rem,3vw,2.2rem); }
+.stat-num{ font-family:'Fraunces', serif; font-weight:500; font-size:clamp(2.6rem,3vw,4rem); color:var(--ink); line-height:1; }
+.stat-cap{ margin-top:.6rem; color:var(--ink-2); font-size:.9rem; }
+.stat-cap b{ color:var(--ink); }
+
+.evidence-card{ background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:clamp(1.4rem,3vw,2.2rem); }
+.chart-title{ font-weight:700; margin-bottom:.2rem; }
+.chart-sub{ color:var(--ink-3); font-size:.85rem; margin-bottom:1.6rem; }
+.chart-row + .chart-row{ margin-top:1.4rem; }
+.chart-label{ font-size:.9rem; font-weight:600; margin-bottom:.55rem; }
+.bar-track{ display:flex; align-items:center; gap:.75rem; }
+.bar-track + .bar-track{ margin-top:.4rem; }
+.bar-outer{ flex:1; height:.4rem; border-radius:999px; background:var(--surface-2); overflow:hidden; }
+.bar-fill{ height:100%; border-radius:999px; width:0%; transition:width 1.1s var(--ease); }
+.bar-fill.si{ background:var(--slate); }
+.bar-fill.hr{ background:var(--green); }
+.bar-val{ font-family:'IBM Plex Mono', monospace; font-size:.8rem; width:2.5rem; text-align:right; color:var(--ink-2); flex:none; }
+.chart-legend{ display:flex; gap:1.5rem; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+.legend-item{ display:flex; align-items:center; gap:.5rem; font-size:.8rem; color:var(--ink-2); }
+.legend-dot{ width:.55rem; height:.55rem; border-radius:999px; }
+.legend-dot.si{ background:var(--slate); }
+.legend-dot.hr{ background:var(--green); }
+
+.callout{ background:var(--slate-soft); border-radius:4px; padding:1.4rem 1.6rem; margin-top:1.6rem; font-size:.95rem; }
+.callout.amber{ background:var(--accent-soft); }
+
+/* ---------- FAQ ---------- */
+.faq-list{ border-top:1px solid var(--line); }
+.faq{ border-bottom:1px solid var(--line); }
+.faq summary{
+  cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+  padding:1.5rem 0; font-family:'Fraunces', serif; font-size:1.15rem; font-weight:500;
+}
+.faq summary::-webkit-details-marker{ display:none; }
+.faq .plus{ flex:none; width:1.5rem; height:1.5rem; position:relative; }
+.faq .plus::before, .faq .plus::after{ content:""; position:absolute; background:var(--ink); transition:transform .3s var(--ease); }
+.faq .plus::before{ left:0; top:50%; width:100%; height:1.4px; transform:translateY(-50%); }
+.faq .plus::after{ top:0; left:50%; height:100%; width:1.4px; transform:translateX(-50%); }
+.faq[open] .plus::after{ transform:translateX(-50%) rotate(90deg); opacity:0; }
+.faq[open] summary{ color:var(--green-strong); }
+.faq-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s var(--ease); }
+.faq[open] .faq-body{ grid-template-rows:1fr; }
+.faq-body > div{ overflow:hidden; }
+.faq-body p{ padding-bottom:1.5rem; color:var(--ink-2); max-width:42rem; }
+
+/* ---------- Partners ---------- */
+.partners-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+.partner-col{ background:var(--surface); padding:clamp(1.4rem,3vw,2rem); }
+.partner-col-head{ display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+.partner-col img{ height:44px; width:auto; }
+.partner-col ul{ display:flex; flex-direction:column; gap:.6rem; font-size:.9rem; color:var(--ink-2); }
+.partner-col li strong{ color:var(--ink); }
+
+/* ---------- Contact ---------- */
+.contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(1.5rem,3vw,2rem); margin-bottom:2.5rem; }
+.contact-card{ background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1.6rem; }
+.contact-card .eyebrow{ margin-bottom:.7rem; }
+.contact-card a.email{ font-family:'IBM Plex Mono', monospace; font-size:.95rem; color:var(--green-strong); }
+
+.form-card{ background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:clamp(1.6rem,3vw,2.2rem); }
+.field{ margin-bottom:1.1rem; }
+.field label{ display:block; font-size:.8rem; font-weight:600; color:var(--ink-2); margin-bottom:.4rem; }
+.field input, .field select, .field textarea{
+  width:100%; padding:.85rem .9rem; border-radius:2px; border:1px solid var(--line);
+  background:var(--bg); color:var(--ink); font:inherit; font-size:.95rem;
+  transition:border-color .15s ease;
+}
+.field input:focus, .field select:focus, .field textarea:focus{ border-color:var(--green); }
+.field textarea{ resize:vertical; min-height:110px; }
+.form-note{ font-size:.78rem; color:var(--ink-3); text-align:center; margin-top:.9rem; }
+
+/* ---------- Connect / Instagram ---------- */
+.connect{
+  background:var(--ink); color:var(--bg);
+  border-radius:8px; padding:clamp(3rem,7vw,6rem) clamp(1.5rem,5vw,4rem);
+  text-align:center; position:relative; overflow:hidden;
+}
+.connect::before{
+  content:""; position:absolute; inset:-40%; opacity:.5;
+  background:radial-gradient(circle at 25% 25%, color-mix(in srgb, var(--green) 55%, transparent), transparent 60%),
+             radial-gradient(circle at 78% 75%, color-mix(in srgb, var(--slate) 45%, transparent), transparent 60%);
+  pointer-events:none;
+}
+.connect > *{ position:relative; }
+.connect .eyebrow{ color:color-mix(in srgb, var(--bg) 70%, transparent); justify-content:center; }
+.connect h2{ color:var(--bg); margin-top:1rem; margin-bottom:1.1rem; }
+.connect p.lede{ color:color-mix(in srgb, var(--bg) 78%, transparent); max-width:34rem; margin-inline:auto; margin-bottom:2.2rem; }
+.ig-btn{
+  display:inline-flex; align-items:center; gap:.75rem; background:var(--bg); color:var(--ink);
+  padding:1.1rem 1.9rem; border-radius:2px; font-weight:700; font-size:.95rem;
+  transition:transform .2s var(--ease), box-shadow .2s ease;
+}
+.ig-btn:hover{ transform:translateY(-2px); box-shadow:0 20px 40px -16px rgba(0,0,0,.5); }
+.ig-btn svg{ transition:transform .2s var(--ease); }
+.ig-btn:hover svg{ transform:translate(3px,-3px); }
+.connect-handle{ margin-top:1.6rem; font-family:'IBM Plex Mono', monospace; font-size:.85rem; color:color-mix(in srgb, var(--bg) 65%, transparent); }
+.connect-sub{ margin-top:.5rem; font-size:.85rem; color:color-mix(in srgb, var(--bg) 55%, transparent); max-width:28rem; margin-inline:auto; }
+.connect-tags{ margin-top:2.2rem; padding-top:1.6rem; border-top:1px solid color-mix(in srgb, var(--bg) 20%, transparent); font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.05em; color:color-mix(in srgb, var(--bg) 55%, transparent); }
+
+/* ---------- Footer ---------- */
+.footer{ padding-block:clamp(48px,7vw,80px); border-top:1px solid var(--line); }
+.footer-top{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2.5rem; margin-bottom:2.5rem; }
+.footer-brand{ font-family:'Fraunces', serif; font-weight:600; font-size:1.2rem; }
+.footer-tag{ color:var(--ink-3); font-size:.85rem; margin-top:.4rem; }
+.footer-langs{ font-size:.85rem; color:var(--ink-2); }
+.footer-langs .lbl{ color:var(--ink-3); font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:.5rem; }
+.footer-legal{ background:var(--surface); border:1px solid var(--line); border-radius:4px; padding:1.2rem 1.4rem; font-size:.8rem; color:var(--ink-2); margin-bottom:1.4rem; }
+.footer-note{ font-size:.8rem; color:var(--ink-2); max-width:44rem; margin-bottom:1.6rem; }
+.footer-bottom{ display:flex; flex-wrap:wrap; align-items:center; gap:1.2rem; font-size:.8rem; color:var(--ink-2); }
+.footer-bottom a:hover{ color:var(--ink); text-decoration:underline; }
+
+/* ---------- Responsive ---------- */
+@media (min-width:900px){
+  .hero-grid{ grid-template-columns:1.15fr .85fr; align-items:end; }
+}
+@media (max-width:767px){
+  .contact-grid{ grid-template-columns:1fr; }
+  .stat-row{ grid-template-columns:1fr; }
+}
+@media (max-width:520px){
+  .problem-item{ grid-template-columns:1fr; gap:.4rem; }
+  .footer-bottom{ flex-direction:column; align-items:flex-start; }
+}
+
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link" data-i18n="skip.toContent">Skip to content</a>
+
+<header class="site-nav" id="site-nav">
+  <div class="container nav-row">
+    <a href="#top" class="brand"><span class="brand-mark" aria-hidden="true"></span>ECO CARE</a>
+
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#project" class="nav-link" data-nav-for="project" data-i18n="nav.project">The project</a>
+      <a href="#pharmacies" class="nav-link" data-nav-for="pharmacies" data-i18n="nav.pharmacies">Pharmacies</a>
+      <a href="#patients" class="nav-link" data-nav-for="patients" data-i18n="nav.patients">Patients</a>
+      <a href="#evidence" class="nav-link" data-nav-for="evidence" data-i18n="nav.evidence">Evidence</a>
+      <a href="#contact" class="nav-link" data-nav-for="contact" data-i18n="nav.contact">Contact</a>
+    </nav>
+
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang-btn="sl" aria-pressed="false">SL</button>
+        <button type="button" class="lang-btn" data-lang-btn="hr" aria-pressed="false">HR</button>
+      </div>
+      <button type="button" class="menu-toggle" id="menu-toggle" aria-expanded="false" aria-controls="mobile-panel" data-i18n-attr-aria-label="nav.menu" aria-label="Menu">
+        <span class="bars" aria-hidden="true"><span></span><span></span><span></span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-panel" id="mobile-panel">
+  <a href="#project" data-i18n="nav.project">The project</a>
+  <a href="#pharmacies" data-i18n="nav.pharmacies">Pharmacies</a>
+  <a href="#patients" data-i18n="nav.patients">Patients</a>
+  <a href="#evidence" data-i18n="nav.evidence">Evidence</a>
+  <a href="#contact" data-i18n="nav.contact">Contact</a>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" class="lang-btn" data-lang-btn="en" aria-pressed="true">EN</button>
+    <button type="button" class="lang-btn" data-lang-btn="sl" aria-pressed="false">SL</button>
+    <button type="button" class="lang-btn" data-lang-btn="hr" aria-pressed="false">HR</button>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="container">
+      <div class="hero-grid">
+        <div>
+          <div class="hero-meta">
+            <span class="eyebrow" data-i18n="hero.eyebrow">Erasmus+ KA210 · Slovenia &amp; Croatia</span>
+          </div>
+          <h1 class="h-display h1" data-i18n-html="hero.h1">Safe medicines<br>at home.<br><em>Safer for the planet.</em></h1>
+          <p class="lede hero-sub" data-i18n="hero.subhead">ECO CARE turns what pharmacists already know about dosing, storage, and disposal into plain guidance — for the people managing medicines at home, and the pharmacies helping them do it.</p>
+          <div class="actions">
+            <a href="#pharmacies" class="btn btn-primary" data-i18n="hero.ctaPharmacies">For Pharmacies &amp; Providers</a>
+            <a href="#patients" class="btn btn-line" data-i18n="hero.ctaPatients">For Patients &amp; Caregivers</a>
+          </div>
+        </div>
+        <div>
+          <span class="status-chip"><span class="status-dot pulse" aria-hidden="true"></span><span data-i18n="hero.status">WP2 in progress — pilot workshops, 2026</span></span>
+        </div>
+      </div>
+
+      <div class="masthead">
+        <img id="masthead-si" src="data:image/webp;base64,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" alt="Pametno z zdravili — ECO CARE project mark, Slovenian" width="187" height="125" loading="lazy" />
+        <img id="masthead-hr" src="data:image/webp;base64,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" alt="Pametno s lijekovima — ECO CARE project mark, Croatian" width="187" height="125" loading="lazy" />
+        <span class="masthead-label">ZKFS · VSMS · 2025–2027</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE PROJECT ============ -->
+  <section class="section hairline" id="project">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="s1.heading">What ECO CARE is</span>
+        <h2 class="h-display h2" data-i18n="s1.heading">What ECO CARE is</h2>
+      </div>
+      <div class="measure" data-reveal-group>
+        <p class="lede" style="margin-bottom:1.2rem" data-i18n-html="s1.p1"></p>
+        <p class="lede" data-i18n-html="s1.p2"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ THE PROBLEM ============ -->
+  <section class="section section-alt" id="the-problem">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="problem.eyebrow">The real-world problem</span>
+        <h2 class="h-display h2" data-i18n="problem.heading">What goes wrong at home</h2>
+      </div>
+
+      <div class="problem-list" data-reveal-group>
+        <div class="problem-item">
+          <span class="problem-num mono" data-i18n="problem.num1">01</span>
+          <div>
+            <span class="problem-cat" data-i18n="problem.cat1">Crushing</span>
+            <h3 class="h-display h3" data-i18n="s2.card1.title">Check before crushing or splitting</h3>
+            <p data-i18n="s2.card1.text">Confirm whether a score line is for dosing or just easier swallowing, and whether a modified-release or coated tablet is safe to crush at all.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-num mono" data-i18n="problem.num2">02</span>
+          <div>
+            <span class="problem-cat" data-i18n="problem.cat2">Storage</span>
+            <h3 class="h-display h3" data-i18n="s3.item3.title">Store it out of reach</h3>
+            <p data-i18n="s3.item3.text">Cool, dry, out of light, and out of reach of children — not the bathroom cabinet.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-num mono" data-i18n="problem.num3">03</span>
+          <div>
+            <span class="problem-cat" data-i18n="problem.cat3">Dosing</span>
+            <h3 class="h-display h3" data-i18n="s3.item2.title">Measure liquid doses properly</h3>
+            <p data-i18n="s3.item2.text">Use the syringe or cup that came with the medicine, never a kitchen spoon.</p>
+          </div>
+        </div>
+        <div class="problem-item">
+          <span class="problem-num mono" data-i18n="problem.num4">04</span>
+          <div>
+            <span class="problem-cat" data-i18n="problem.cat4">Disposal</span>
+            <h3 class="h-display h3" data-i18n="s3.item5.title">Return, don't bin or flush</h3>
+            <p data-i18n="s3.item5.text">Unused or expired medicines go back to a pharmacy — never the bin, sink, or toilet.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOR PHARMACIES ============ -->
+  <section class="section hairline scroll-mt" id="pharmacies" style="scroll-margin-top:5.5rem">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="s2.eyebrow">For pharmacies &amp; healthcare providers</span>
+        <h2 class="h-display h2" data-i18n="s2.heading">Counselling support, built from the Needs Analysis</h2>
+      </div>
+
+      <div class="toolkit" data-reveal>
+        <div class="tablist" role="tablist" aria-orientation="vertical" aria-label="Pharmacy priorities">
+          <button type="button" class="tab-btn" role="tab" id="tab-0" aria-controls="panel-0" aria-selected="true">
+            <span class="num mono">01</span><span class="label" data-i18n="pharma.tablabel1">Crushing &amp; splitting</span>
+          </button>
+          <button type="button" class="tab-btn" role="tab" id="tab-1" aria-controls="panel-1" aria-selected="false" tabindex="-1">
+            <span class="num mono">02</span><span class="label" data-i18n="pharma.tablabel2">Disposal timing</span>
+          </button>
+          <button type="button" class="tab-btn" role="tab" id="tab-2" aria-controls="panel-2" aria-selected="false" tabindex="-1">
+            <span class="num mono">03</span><span class="label" data-i18n="pharma.tablabel3">Leftover antibiotics</span>
+          </button>
+        </div>
+
+        <div class="panels">
+          <div class="pharma-panel is-active" role="tabpanel" id="panel-0" aria-labelledby="tab-0">
+            <p class="big-num mono">01</p>
+            <h3 class="h-display h3" data-i18n="s2.card1.title">Check before crushing or splitting</h3>
+            <p data-i18n="s2.card1.text">Confirm whether a score line is for dosing or just easier swallowing, and whether a modified-release or coated tablet is safe to crush at all — the single most-prioritised topic in both countries' surveys.</p>
+          </div>
+          <div class="pharma-panel" role="tabpanel" id="panel-1" aria-labelledby="tab-1">
+            <p class="big-num mono">02</p>
+            <h3 class="h-display h3" data-i18n="s2.card2.title">Time disposal guidance to the moment</h3>
+            <p data-i18n="s2.card2.text">Offer take-back guidance at therapy change, at treatment completion, and when a patient is clearing a deceased relative's medicines — the points the Needs Analysis found disposal advice is most needed and least often given.</p>
+          </div>
+          <div class="pharma-panel" role="tabpanel" id="panel-2" aria-labelledby="tab-2">
+            <p class="big-num mono">03</p>
+            <h3 class="h-display h3" data-i18n="s2.card3.title">Flag leftover antibiotics specifically</h3>
+            <p data-i18n="s2.card3.text">Part-used courses and children's antibiotic syrups are commonly kept "for next time." Remind patients to return them — antibiotic syrups also carry a short shelf life once opened.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout amber" data-reveal>
+        <p data-i18n-html="s2.callout"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FOR PATIENTS ============ -->
+  <section class="section section-alt" id="patients" style="scroll-margin-top:5.5rem">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="s3.eyebrow">For patients &amp; caregivers</span>
+        <h2 class="h-display h2" data-i18n="s3.heading">Five rules for medicines at home</h2>
+        <p class="lede" style="margin-top:1rem" data-i18n="s3.intro">Your pharmacist gave you this code because these are exactly the questions ECO CARE was built to answer.</p>
+      </div>
+
+      <div class="rules" data-reveal-group>
+        <div class="rule"><span class="num">01</span><h4 data-i18n="s3.item1.title">Ask before crushing</h4><p data-i18n="s3.item1.text">Not every tablet can be split or crushed safely — check with your pharmacist first.</p></div>
+        <div class="rule"><span class="num">02</span><h4 data-i18n="s3.item2.title">Measure liquid doses properly</h4><p data-i18n="s3.item2.text">Use the syringe or cup that came with the medicine, never a kitchen spoon.</p></div>
+        <div class="rule"><span class="num">03</span><h4 data-i18n="s3.item3.title">Store it out of reach</h4><p data-i18n="s3.item3.text">Cool, dry, out of light, and out of reach of children — not the bathroom cabinet.</p></div>
+        <div class="rule"><span class="num">04</span><h4 data-i18n="s3.item4.title">Finish or return antibiotics</h4><p data-i18n="s3.item4.text">Never save leftovers "just in case," and never share them with someone else.</p></div>
+        <div class="rule"><span class="num">05</span><h4 data-i18n="s3.item5.title">Return, don't bin or flush</h4><p data-i18n="s3.item5.text">Unused or expired medicines go back to a pharmacy — never the bin, sink, or toilet.</p></div>
+        <div class="rule why"><h4 data-i18n="s3.why.title">Why it matters</h4><p data-i18n="s3.why.text">Medicines that end up in water or soil affect wildlife too — not just people.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ WHY IT MATTERS (pause) ============ -->
+  <section class="pause" id="why">
+    <div class="container">
+      <blockquote data-reveal data-i18n="s3.why.text">"Medicines that end up in water or soil affect wildlife too — not just people."</blockquote>
+    </div>
+  </section>
+
+  <!-- ============ EVIDENCE ============ -->
+  <section class="section hairline" id="evidence" style="scroll-margin-top:5.5rem">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="s4.eyebrow">The evidence behind ECO CARE</span>
+        <h2 class="h-display h2" data-i18n="s4.heading">Built on a real Needs Analysis, not guesswork</h2>
+      </div>
+
+      <div class="stat-row" data-reveal>
+        <div class="stat-tile">
+          <p class="stat-num" data-count-to="22">0</p>
+          <p class="stat-cap" data-i18n-html="s4.stat1">stakeholder responses<br>18 Slovenia · 4 Croatia</p>
+        </div>
+        <div class="stat-tile">
+          <p class="stat-num" data-count-to="20">0</p>
+          <p class="stat-cap" data-i18n-html="s4.stat2">patient &amp; caregiver responses<br>12 Slovenia · 8 Croatia</p>
+        </div>
+      </div>
+
+      <div class="evidence-card" data-reveal>
+        <p class="chart-title" data-i18n="s4.chartTitle">How often stakeholders see these problems at home</p>
+        <p class="chart-sub" data-i18n="s4.chartSub">Self-reported frequency, scale 0 (never) – 5 (very often)</p>
+
+        <div class="chart-row">
+          <p class="chart-label" data-i18n="s4.label1">Improper disposal of medicines</p>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill si" data-bar-width="78"></div></div><span class="bar-val mono">3.9</span></div>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill hr" data-bar-width="70"></div></div><span class="bar-val mono">3.5</span></div>
+        </div>
+        <div class="chart-row">
+          <p class="chart-label" data-i18n="s4.label2">Inappropriate storage</p>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill si" data-bar-width="68"></div></div><span class="bar-val mono">3.4</span></div>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill hr" data-bar-width="80"></div></div><span class="bar-val mono">4.0</span></div>
+        </div>
+        <div class="chart-row">
+          <p class="chart-label" data-i18n="s4.label3">Difficulties with tablet crushing</p>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill si" data-bar-width="66"></div></div><span class="bar-val mono">3.3</span></div>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill hr" data-bar-width="66"></div></div><span class="bar-val mono">3.3</span></div>
+        </div>
+        <div class="chart-row">
+          <p class="chart-label" data-i18n="s4.label4">Incorrect dosing / measurement</p>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill si" data-bar-width="62"></div></div><span class="bar-val mono">3.1</span></div>
+          <div class="bar-track"><div class="bar-outer"><div class="bar-fill hr" data-bar-width="50"></div></div><span class="bar-val mono">2.5</span></div>
+        </div>
+
+        <div class="chart-legend">
+          <span class="legend-item"><span class="legend-dot si"></span><span data-i18n="s4.legendSI">Slovenia</span></span>
+          <span class="legend-item"><span class="legend-dot hr"></span><span data-i18n="s4.legendHR">Croatia</span></span>
+        </div>
+      </div>
+
+      <div class="callout" data-reveal>
+        <p data-i18n="s4.callout">Not a single stakeholder in either country said patients fully understand the environmental consequences of improper medicine disposal.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="faq.eyebrow">Frequently asked</span>
+        <h2 class="h-display h2" data-i18n="faq.heading">Common questions</h2>
+      </div>
+
+      <div class="faq-list" data-reveal>
+        <details class="faq" open>
+          <summary><span data-i18n="faq.q1">Can I crush my tablet to make it easier to swallow?</span><span class="plus" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p data-i18n="faq.a1">Sometimes — but not always. Ask your pharmacist before you do.</p></div></div>
+        </details>
+        <details class="faq">
+          <summary><span data-i18n="faq.q2">What do I do with leftover antibiotics?</span><span class="plus" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p data-i18n="faq.a2">Don't keep them for later and don't share them.</p></div></div>
+        </details>
+        <details class="faq">
+          <summary><span data-i18n="faq.q3">Why can't I just bin old medicines or flush them?</span><span class="plus" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p data-i18n="faq.a3">Medicines flushed or binned can end up in soil and waterways.</p></div></div>
+        </details>
+        <details class="faq">
+          <summary><span data-i18n="faq.q4">Where do I return unused or expired medicines?</span><span class="plus" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p data-i18n="faq.a4">In Slovenia, community pharmacies and collection centres accept waste medicines. In Croatia, pharmacies collect them under the national take-back system.</p></div></div>
+        </details>
+        <details class="faq">
+          <summary><span data-i18n="faq.q5">Is this the same as my doctor's or pharmacist's instructions?</span><span class="plus" aria-hidden="true"></span></summary>
+          <div class="faq-body"><div><p data-i18n="faq.a5">It supports their advice, not replaces it.</p></div></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PARTNERS ============ -->
+  <section class="section hairline">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="s6.eyebrow">Partners &amp; contact</span>
+        <h2 class="h-display h2" data-i18n="s6.heading">Who's behind ECO CARE</h2>
+      </div>
+
+      <div class="partners-grid" data-reveal>
+        <div class="partner-col" id="col-si" style="order:1">
+          <div class="partner-col-head">
+            <span class="eyebrow" data-i18n="s6.colSI.label">Slovenia</span>
+          </div>
+          <ul>
+            <li><strong>ZKFS</strong> — <span data-i18n="s6.colSI.li1">Association of Clinical Pharmacists of Slovenia, Project Coordinator</span></li>
+            <li data-i18n="s6.colSI.li2">Slovenian Chamber of Pharmacies</li>
+            <li data-i18n="s6.colSI.li3">National Institute of Public Health (NIJZ)</li>
+            <li data-i18n="s6.colSI.li4">Patient organisations (Združenje pacientov)</li>
+          </ul>
+        </div>
+        <div class="partner-col" id="col-hr" style="order:2">
+          <div class="partner-col-head">
+            <span class="eyebrow" data-i18n="s6.colHR.label">Croatia</span>
+            <img src="data:image/webp;base64,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" alt="Udruga Veliko srce malom srcu" width="120" height="60" loading="lazy" />
+          </div>
+          <ul>
+            <li><strong>Veliko srce malom srcu</strong> — <span data-i18n="s6.colHR.li1">Partner organisation</span></li>
+            <li data-i18n="s6.colHR.li2">Faculty of Pharmacy and Biochemistry, University of Zagreb</li>
+            <li data-i18n="s6.colHR.li3">Hrvatska ljekarnička komora (HLJK)</li>
+            <li data-i18n="s6.colHR.li4">Hrvatska udruga medicinskih sestara (HUMS)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section class="section section-alt" id="contact" style="scroll-margin-top:5.5rem">
+    <div class="container">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow" data-i18n="s6.eyebrow">Partners &amp; contact</span>
+        <h2 class="h-display h2" data-i18n="contact.heading">Let's talk.</h2>
+      </div>
+
+      <div class="contact-grid" data-reveal-group>
+        <div class="contact-card">
+          <p class="eyebrow" data-i18n="contact.stay.label">Fastest way to reach us</p>
+          <p style="margin-bottom:.8rem" data-i18n="contact.stay.text">Follow or message @ecocare_si_hr on Instagram.</p>
+          <a class="email" href="mailto:info@ecocare-project.eu">info@ecocare-project.eu</a>
+        </div>
+        <div class="contact-card" style="background:var(--accent-soft); border-color:transparent;">
+          <p class="eyebrow" style="color:var(--accent)" data-i18n="s6.partner.label">Partner &amp; media enquiries</p>
+          <p style="margin-bottom:.4rem" data-i18n="s6.partner.text">Coordinated jointly by ZKFS and VSMS</p>
+          <p style="font-size:.85rem; color:var(--ink-2)" data-i18n="s6.partner.note">Use the form below or the general enquiries address</p>
+        </div>
+      </div>
+
+      <form id="contact-form" class="form-card" novalidate data-reveal>
+        <p class="h3 h-display" style="margin-bottom:1.4rem" data-i18n="form.title">Send a message</p>
+        <div class="field">
+          <label for="cf-name" data-i18n="form.nameLabel">Name</label>
+          <input id="cf-name" type="text" required data-i18n-attr-placeholder="form.namePlaceholder" placeholder="Jane Doe" />
+        </div>
+        <div class="field">
+          <label for="cf-email" data-i18n="form.emailLabel">Email</label>
+          <input id="cf-email" type="email" required placeholder="jane@example.com" />
+        </div>
+        <div class="field">
+          <label for="cf-role" data-i18n="form.roleLabel">I am a…</label>
+          <select id="cf-role">
+            <option data-i18n="form.role1">Pharmacy or healthcare provider</option>
+            <option data-i18n="form.role2">Patient or caregiver</option>
+            <option data-i18n="form.role3">Project partner or stakeholder</option>
+            <option data-i18n="form.role4">Other</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="cf-message" data-i18n="form.messageLabel">Message</label>
+          <textarea id="cf-message" required data-i18n-attr-placeholder="form.messagePlaceholder" placeholder="How can we help?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%" data-i18n="form.submit">Send message</button>
+        <p class="form-note" data-i18n="form.note">Opens your email app with this message pre-filled.</p>
+      </form>
+    </div>
+  </section>
+
+  <!-- ============ STAY CONNECTED (Instagram) ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="connect" data-reveal>
+        <span class="eyebrow" data-i18n="connect.eyebrow">Stay connected</span>
+        <h2 class="h-display h2" data-i18n="connect.heading">Let's stay connected</h2>
+        <p class="lede" data-i18n="connect.text">Follow ECO CARE as we make medicines safer for people — and better for the planet.</p>
+        <a href="https://www.instagram.com/ecocare_si_hr/" target="_blank" rel="noopener noreferrer" class="ig-btn" data-i18n-attr-aria-label="connect.ariaLabel" aria-label="Follow ECO CARE on Instagram, opens in a new tab">
+          <span data-i18n="connect.cta">Follow us on Instagram</span>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <p class="connect-handle">@ecocare_si_hr</p>
+        <p class="connect-sub" data-i18n="connect.sub">Follow @ecocare_si_hr for project updates, practical tips and the journey behind ECO CARE.</p>
+        <p class="connect-tags" data-i18n="connect.tags">Project updates · Practical tips · ECO CARE</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <p class="footer-brand">ECO CARE</p>
+        <p class="footer-tag" data-i18n="hero.eyebrow">Erasmus+ KA210 · Slovenia &amp; Croatia</p>
+      </div>
+      <div class="footer-langs">
+        <span class="lbl" data-i18n="footer.langsLabel">Available in</span>
+        <span data-i18n="footer.langEn">English</span> · <span data-i18n="footer.langSl">Slovenian</span> · <span data-i18n="footer.langHr">Croatian</span>
+      </div>
+    </div>
+
+    <div class="footer-legal" style="display:flex; flex-wrap:wrap; gap:1.2rem; align-items:flex-start;">
+      <img id="eu-logo" src="data:image/webp;base64,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" alt="Funded by the European Union" width="160" height="34" loading="lazy" style="flex:none; margin-top:.15rem;" />
+      <p data-i18n="footer.euDisclaimer">Funded by the European Union (Grant Agreement KA210-ADU-0005/2025). The views and opinions expressed are those of the author(s) only and do not necessarily reflect those of the European Union or CMEPIUS. Neither the European Union nor the granting authority can be held responsible for them.</p>
+    </div>
+    <p class="footer-note" data-i18n="footer.generalDisclaimer">ECO CARE provides general educational information on safe medicine use and does not replace advice from your pharmacist or prescriber. In an emergency, contact your local emergency services.</p>
+
+    <div class="footer-bottom">
+      <a href="#" data-i18n="footer.privacy">Privacy policy</a>
+      <span aria-hidden="true">·</span>
+      <a href="#" data-i18n="footer.terms">Terms of use</a>
+      <span aria-hidden="true">·</span>
+      <span class="mono">© <span id="cf-year"></span> <span data-i18n="footer.copyright">ECO CARE · ZKFS &amp; VSMS</span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ECO CARE — i18n data + interactions */
+
+const translations = {
+  "en": {
+    "nav.pharmacies": "Pharmacies",
+    "nav.patients": "Patients",
+    "nav.evidence": "Evidence",
+    "nav.contact": "Contact",
+    "hero.eyebrow": "Erasmus+ KA210 · Slovenia & Croatia",
+    "hero.h1": "Safe medicines at home.<br/>Safer for the planet, too.",
+    "hero.subhead": "ECO CARE turns what pharmacists already know about dosing, storage, and disposal into plain guidance — for the people managing medicines at home, and the pharmacies helping them do it.",
+    "hero.ctaPharmacies": "For Pharmacies & Providers",
+    "hero.ctaPatients": "For Patients & Caregivers",
+    "hero.status": "WP2 in progress — pilot workshops, 2026",
+    "s1.heading": "What ECO CARE is",
+    "s1.p1": "ECO CARE is an Erasmus+ KA210 Small-scale Partnership in Adult Education, running 1 November 2025 – 30 April 2027. It's coordinated by <strong style=\"color:var(--ink)\">Združenje kliničnih farmacevtov Slovenije (ZKFS)</strong> — the Association of Clinical Pharmacists of Slovenia — with <strong style=\"color:var(--ink)\">Veliko srce malom srcu</strong> (Croatia) as partner. It addresses something formal healthcare rarely has time for: what happens to a medicine <em>after</em> it leaves the pharmacy counter — how it's dosed, stored, split, and eventually thrown away, and what that means for the people and the environment around it.",
+    "s1.p2": "The project's first phase (WP1) gathered evidence from pharmacists, healthcare professionals, and patients in both countries. That evidence — summarised in <a href=\"#evidence\" class=\"underline\">§4</a> — now shapes the workshops, videos, and the ECO CARE handbook being built under WP2.",
+    "s2.eyebrow": "For pharmacies & healthcare providers",
+    "s2.heading": "Counselling support, built from the Needs Analysis",
+    "s2.card1.title": "Check before crushing or splitting",
+    "s2.card1.text": "Confirm whether a score line is for dosing or just easier swallowing, and whether a modified-release or coated tablet is safe to crush at all — the single most-prioritised topic in both countries' surveys.",
+    "s2.card2.title": "Time disposal guidance to the moment",
+    "s2.card2.text": "Offer take-back guidance at therapy change, at treatment completion, and when a patient is clearing a deceased relative's medicines — the points the Needs Analysis found disposal advice is most needed and least often given.",
+    "s2.card3.title": "Flag leftover antibiotics specifically",
+    "s2.card3.text": "Part-used courses and children's antibiotic syrups are commonly kept \"for next time.\" Remind patients to return them — antibiotic syrups also carry a short shelf life once opened.",
+    "s2.callout": "<strong>Partner enquiry or clinical question?</strong> Use the contact details in <a href=\"#contact\" class=\"underline\">§6</a> — ZKFS and VSMS coordinate day to day.",
+    "s3.eyebrow": "For patients & caregivers",
+    "s3.heading": "Five rules for medicines at home",
+    "s3.intro": "Your pharmacist gave you this code because these are exactly the questions ECO CARE was built to answer. It doesn't replace their advice — it's the same advice, ready whenever you need to check it again.",
+    "s3.item1.title": "Ask before crushing",
+    "s3.item1.text": "Not every tablet can be split or crushed safely — check with your pharmacist first.",
+    "s3.item2.title": "Measure liquid doses properly",
+    "s3.item2.text": "Use the syringe or cup that came with the medicine, never a kitchen spoon.",
+    "s3.item3.title": "Store it out of reach",
+    "s3.item3.text": "Cool, dry, out of light, and out of reach of children — not the bathroom cabinet.",
+    "s3.item4.title": "Finish or return antibiotics",
+    "s3.item4.text": "Never save leftovers \"just in case,\" and never share them with someone else.",
+    "s3.item5.title": "Return, don't bin or flush",
+    "s3.item5.text": "Unused or expired medicines go back to a pharmacy — never the bin, sink, or toilet.",
+    "s3.why.title": "Why it matters",
+    "s3.why.text": "Medicines that end up in water or soil affect wildlife too — not just people.",
+    "faq.eyebrow": "Frequently asked",
+    "faq.heading": "Common questions",
+    "faq.q1": "Can I crush my tablet to make it easier to swallow?",
+    "faq.a1": "Sometimes — but not always. A score line can mean \"split for dosing\" or just \"easier to swallow,\" and modified-release or coated tablets often must not be crushed at all. Ask your pharmacist before you do.",
+    "faq.q2": "What do I do with leftover antibiotics?",
+    "faq.a2": "Don't keep them for later and don't share them. Close the container and return it to any pharmacy — this is especially common with children's antibiotic syrups, which are rarely finished exactly to the last dose.",
+    "faq.q3": "Why can't I just bin old medicines or flush them?",
+    "faq.a3": "Medicines flushed or binned can end up in soil and waterways, where they affect wildlife and water quality. ECO CARE's own survey found that in both Slovenia and Croatia, this is still one of the most common disposal habits — pharmacy return is the safe alternative.",
+    "faq.q4": "Where do I return unused or expired medicines?",
+    "faq.a4": "In Slovenia, community pharmacies, collection centres, and mobile collection units all accept waste medicines. In Croatia, pharmacies collect them in sealed containers under the national take-back system — look for a drop-off container at the counter.",
+    "faq.q5": "Is this the same as my doctor's or pharmacist's instructions?",
+    "faq.a5": "It supports their advice, not replaces it. Your label and your pharmacist always take priority — ECO CARE fills in the everyday, practical detail there usually isn't time for at the counter.",
+    "s4.eyebrow": "The evidence behind ECO CARE",
+    "s4.heading": "Built on a real Needs Analysis, not guesswork",
+    "s4.stat1": "stakeholder responses<br/>18 Slovenia · 4 Croatia",
+    "s4.stat2": "patient & caregiver responses<br/>12 Slovenia · 8 Croatia",
+    "s4.chartTitle": "How often stakeholders see these problems at home",
+    "s4.chartSub": "Self-reported frequency, scale 0 (never) – 5 (very often)",
+    "s4.label1": "Improper disposal of medicines",
+    "s4.label2": "Inappropriate storage",
+    "s4.label3": "Difficulties with tablet crushing",
+    "s4.label4": "Incorrect dosing / measurement",
+    "s4.legendSI": "Slovenia",
+    "s4.legendHR": "Croatia",
+    "s4.callout": "Not a single stakeholder in either country said patients fully understand the environmental consequences of improper medicine disposal — the strongest single finding of the Needs Analysis, and the reason environmental impact is a core ECO CARE topic, not an add-on.",
+    "s6.eyebrow": "Partners & contact",
+    "s6.heading": "Who's behind ECO CARE",
+    "s6.colSI.label": "Slovenia",
+    "s6.colSI.li1": "Association of Clinical Pharmacists of Slovenia, Project Coordinator",
+    "s6.colSI.li2": "Slovenian Chamber of Pharmacies",
+    "s6.colSI.li3": "National Institute of Public Health (NIJZ)",
+    "s6.colSI.li4": "Patient organisations (Združenje pacientov)",
+    "s6.colHR.label": "Croatia",
+    "s6.colHR.li1": "Partner organisation",
+    "s6.colHR.li2": "Faculty of Pharmacy and Biochemistry, University of Zagreb",
+    "s6.colHR.li3": "Hrvatska ljekarnička komora (HLJK)",
+    "s6.colHR.li4": "Hrvatska udruga medicinskih sestara (HUMS)",
+    "s6.general.label": "General enquiries",
+    "s6.general.note": "Available in English, Slovenian & Croatian",
+    "s6.partner.label": "Partner & media enquiries",
+    "s6.partner.text": "Coordinated jointly by ZKFS and VSMS",
+    "s6.partner.note": "Use the form below or the general enquiries address",
+    "form.title": "Send a message",
+    "form.nameLabel": "Name",
+    "form.namePlaceholder": "Jane Doe",
+    "form.emailLabel": "Email",
+    "form.roleLabel": "I am a…",
+    "form.role1": "Pharmacy or healthcare provider",
+    "form.role2": "Patient or caregiver",
+    "form.role3": "Project partner or stakeholder",
+    "form.role4": "Other",
+    "form.messageLabel": "Message",
+    "form.messagePlaceholder": "How can we help?",
+    "form.submit": "Send message",
+    "form.note": "Opens your email app with this message pre-filled.",
+    "footer.euDisclaimer": "Funded by the European Union (Grant Agreement KA210-ADU-0005/2025). The views and opinions expressed are those of the author(s) only and do not necessarily reflect those of the European Union or CMEPIUS. Neither the European Union nor the granting authority can be held responsible for them.",
+    "footer.generalDisclaimer": "ECO CARE provides general educational information on safe medicine use and does not replace advice from your pharmacist or prescriber. In an emergency, contact your local emergency services.",
+    "footer.privacy": "Privacy policy",
+    "footer.terms": "Terms of use",
+    "footer.copyright": "ECO CARE · ZKFS & VSMS",
+    "js.mailtoSubject": "ECO CARE enquiry from ",
+    "js.name": "Name",
+    "js.email": "Email",
+    "js.role": "Role",
+    "skip.toContent": "Skip to content",
+    "nav.project": "The project",
+    "nav.menu": "Menu",
+    "problem.eyebrow": "The real-world problem",
+    "problem.heading": "What goes wrong at home",
+    "problem.cat1": "Crushing",
+    "problem.cat2": "Storage",
+    "problem.cat3": "Dosing",
+    "problem.cat4": "Disposal",
+    "problem.num1": "01",
+    "problem.num2": "02",
+    "problem.num3": "03",
+    "problem.num4": "04",
+    "pharma.tablabel1": "Crushing & splitting",
+    "pharma.tablabel2": "Disposal timing",
+    "pharma.tablabel3": "Leftover antibiotics",
+    "contact.heading": "Let’s talk.",
+    "contact.stay.label": "Fastest way to reach us",
+    "contact.stay.text": "Follow or message @ecocare_si_hr on Instagram.",
+    "connect.eyebrow": "Stay connected",
+    "connect.heading": "Let’s stay connected",
+    "connect.text": "Follow ECO CARE as we make medicines safer for people — and better for the planet.",
+    "connect.cta": "Follow us on Instagram",
+    "connect.ariaLabel": "Follow ECO CARE on Instagram, opens in a new tab",
+    "connect.sub": "Follow @ecocare_si_hr for project updates, practical tips and the journey behind ECO CARE.",
+    "connect.tags": "Project updates · Practical tips · ECO CARE",
+    "why.eyebrow": "Why it matters",
+    "footer.langsLabel": "Available in",
+    "footer.langEn": "English",
+    "footer.langSl": "Slovenian",
+    "footer.langHr": "Croatian"
+  },
+  "sl": {
+    "nav.pharmacies": "Lekarne",
+    "nav.patients": "Pacienti",
+    "nav.evidence": "Dokazi",
+    "nav.contact": "Kontakt",
+    "hero.eyebrow": "Erasmus+ KA210 · Slovenija in Hrvaška",
+    "hero.h1": "Pametno z zdravili doma.<br/>Prijazno tudi do narave.",
+    "hero.subhead": "ECO CARE spreminja to, kar farmacevti že vedo o odmerjanju, shranjevanju in odstranjevanju zdravil, v razumljive nasvete — za vse, ki doma skrbijo za zdravila, in za lekarne, ki jim pri tem pomagajo.",
+    "hero.ctaPharmacies": "Za lekarne in izvajalce",
+    "hero.ctaPatients": "Za paciente in negovalce",
+    "hero.status": "DS2 v teku — pilotne delavnice, 2026",
+    "s1.heading": "Kaj je ECO CARE",
+    "s1.p1": "ECO CARE je partnerstvo Erasmus+ KA210 na področju izobraževanja odraslih, ki poteka od 1. novembra 2025 do 30. aprila 2027. Koordinira ga <strong style=\"color:var(--ink)\">Združenje kliničnih farmacevtov Slovenije (ZKFS)</strong>, partner v projektu pa je hrvaško društvo <strong style=\"color:var(--ink)\">Veliko srce malom srcu</strong>. Projekt naslavlja nekaj, za kar v formalnem zdravstvu pogosto zmanjka časa: kaj se z zdravilom zgodi, <em>potem</em> ko zapusti lekarniški pult — kako ga odmerjamo, shranjujemo, delimo in na koncu zavržemo, ter kaj to pomeni za ljudi in okolje okoli nas.",
+    "s1.p2": "Prva faza projekta (DS1) je zbrala dokaze farmacevtov, zdravstvenih delavcev in pacientov v obeh državah. Ti dokazi — povzeti v <a href=\"#evidence\" class=\"underline\">§4</a> — zdaj oblikujejo delavnice, videe in priročnik ECO CARE, ki nastajajo v okviru DS2.",
+    "s2.eyebrow": "Za lekarne in zdravstvene delavce",
+    "s2.heading": "Podpora pri svetovanju, zasnovana na analizi potreb",
+    "s2.card1.title": "Preverite, preden zdrobite ali razdelite",
+    "s2.card1.text": "Preverite, ali je zareza na tableti namenjena odmerjanju ali le lažjemu požiranju, in ali je tableto s podaljšanim sproščanjem ali obloženo tableto sploh varno zdrobiti — to je bila v anketah obeh držav najpogosteje izpostavljena tema.",
+    "s2.card2.title": "Nasvet o odstranjevanju podajte ob pravem trenutku",
+    "s2.card2.text": "Nasvet o vračanju zdravil ponudite ob spremembi terapije, ob zaključku zdravljenja in kadar pacient ureja zdravila po pokojnem svojcu — to so trenutki, ko je po analizi potreb nasvet o odstranjevanju najbolj potreben, a najredkeje podan.",
+    "s2.card3.title": "Posebej opozorite na preostale antibiotike",
+    "s2.card3.text": "Delno porabljene antibiotike in otroške antibiotične sirupe pacienti pogosto shranijo \"za naslednjič\". Opomnite jih, naj jih vrnejo v lekarno — antibiotični sirupi imajo po odprtju tudi kratek rok uporabnosti.",
+    "s2.callout": "<strong>Vprašanje partnerja ali strokovno vprašanje?</strong> Kontaktni podatki so v <a href=\"#contact\" class=\"underline\">§6</a> — ZKFS in VSMS usklajujeta tekoče delo.",
+    "s3.eyebrow": "Za paciente in negovalce",
+    "s3.heading": "Pet pravil za zdravila doma",
+    "s3.intro": "Vaš farmacevt vam je dal to kodo, ker je ECO CARE nastal prav zato, da odgovori na ta vprašanja. Ne nadomešča njegovega nasveta — je isti nasvet, na voljo vsakič, ko ga želite znova preveriti.",
+    "s3.item1.title": "Vprašajte, preden zdrobite",
+    "s3.item1.text": "Vsake tablete ni varno razdeliti ali zdrobiti — najprej se posvetujte s farmacevtom.",
+    "s3.item2.title": "Pravilno odmerite tekočino",
+    "s3.item2.text": "Uporabite brizgo ali merilno posodico, priloženo zdravilu, nikoli kuhinjske žlice.",
+    "s3.item3.title": "Shranite izven dosega",
+    "s3.item3.text": "Hladno, suho, zaščiteno pred svetlobo in izven dosega otrok — ne v kopalniški omarici.",
+    "s3.item4.title": "Antibiotike dokončajte ali vrnite",
+    "s3.item4.text": "Nikoli ne shranjujte ostankov \"za vsak primer\" in jih ne delite z drugimi.",
+    "s3.item5.title": "Vrnite, ne zavrzite in ne izlijte",
+    "s3.item5.text": "Neuporabljena ali pretečena zdravila vrnite v lekarno — nikoli v smeti, umivalnik ali WC.",
+    "s3.why.title": "Zakaj je to pomembno",
+    "s3.why.text": "Zdravila, ki končajo v vodi ali zemlji, prizadenejo tudi prostoživeče živali — ne le ljudi.",
+    "faq.eyebrow": "Pogosto vprašano",
+    "faq.heading": "Pogosta vprašanja",
+    "faq.q1": "Ali lahko tableto zdrobim, da jo lažje pogoltnem?",
+    "faq.a1": "Včasih — a ne vedno. Zareza lahko pomeni \"razdelite za odmerjanje\" ali le \"lažje požiranje\", tablet s podaljšanim sproščanjem ali obloženih tablet pa pogosto sploh ne smete zdrobiti. Pred tem vprašajte farmacevta.",
+    "faq.q2": "Kaj naj naredim s preostalimi antibiotiki?",
+    "faq.a2": "Ne shranjujte jih za pozneje in jih ne delite z drugimi. Zaprite embalažo in jo vrnite v katerokoli lekarno — to je še posebej pogosto pri otroških antibiotičnih sirupih, ki jih redko porabimo natanko do zadnjega odmerka.",
+    "faq.q3": "Zakaj stara zdravila ne smem preprosto vreči v smeti ali izliti?",
+    "faq.a3": "Zdravila, izlita ali vržena v smeti, lahko končajo v tleh in vodotokih, kjer škodijo prostoživečim vrstam in kakovosti vode. Lastna anketa ECO CARE je pokazala, da je to v Sloveniji in na Hrvaškem še vedno ena najpogostejših navad odstranjevanja — vračanje v lekarno je varna alternativa.",
+    "faq.q4": "Kam vrnem neuporabljena ali pretečena zdravila?",
+    "faq.a4": "V Sloveniji zdravila zbirajo lekarne, zbirni centri in mobilne zbiralnice. Na Hrvaškem jih lekarne zbirajo v zaprtih posodah v okviru nacionalnega sistema vračanja — na blagajni poiščite zbiralnik.",
+    "faq.q5": "Je to enako navodilom mojega zdravnika ali farmacevta?",
+    "faq.a5": "Dopolnjuje njihov nasvet, ne nadomešča ga. Vaša navodila na zdravilu in vaš farmacevt imata vedno prednost — ECO CARE dodaja vsakdanje, praktične podrobnosti, za katere pri lekarniškem pultu običajno zmanjka časa.",
+    "s4.eyebrow": "Dokazi, na katerih temelji ECO CARE",
+    "s4.heading": "Zgrajeno na resnični analizi potreb, ne na ugibanju",
+    "s4.stat1": "odgovorov deležnikov<br/>18 Slovenija · 4 Hrvaška",
+    "s4.stat2": "odgovorov pacientov in negovalcev<br/>12 Slovenija · 8 Hrvaška",
+    "s4.chartTitle": "Kako pogosto deležniki doma opažajo te težave",
+    "s4.chartSub": "Samoocenjena pogostost, lestvica 0 (nikoli) – 5 (zelo pogosto)",
+    "s4.label1": "Nepravilno odstranjevanje zdravil",
+    "s4.label2": "Neustrezno shranjevanje",
+    "s4.label3": "Težave pri drobljenju tablet",
+    "s4.label4": "Napačno odmerjanje / merjenje",
+    "s4.legendSI": "Slovenija",
+    "s4.legendHR": "Hrvaška",
+    "s4.callout": "Niti en deležnik v nobeni od držav ni izjavil, da pacienti v celoti razumejo okoljske posledice nepravilnega odstranjevanja zdravil — to je najmočnejša posamezna ugotovitev analize potreb in razlog, da je vpliv na okolje osrednja tema ECO CARE, ne le dodatek.",
+    "s6.eyebrow": "Partnerji in kontakt",
+    "s6.heading": "Kdo stoji za ECO CARE",
+    "s6.colSI.label": "Slovenija",
+    "s6.colSI.li1": "Združenje kliničnih farmacevtov Slovenije, koordinator projekta",
+    "s6.colSI.li2": "Lekarniška zbornica Slovenije",
+    "s6.colSI.li3": "Nacionalni inštitut za javno zdravje (NIJZ)",
+    "s6.colSI.li4": "Združenje pacientov",
+    "s6.colHR.label": "Hrvaška",
+    "s6.colHR.li1": "partnerska organizacija",
+    "s6.colHR.li2": "Farmacevtsko-biokemijska fakulteta, Univerza v Zagrebu",
+    "s6.colHR.li3": "Hrvatska ljekarnička komora (HLJK)",
+    "s6.colHR.li4": "Hrvatska udruga medicinskih sestara (HUMS)",
+    "s6.general.label": "Splošna vprašanja",
+    "s6.general.note": "Na voljo v angleščini, slovenščini in hrvaščini",
+    "s6.partner.label": "Vprašanja partnerjev in medijev",
+    "s6.partner.text": "Usklajujeta ZKFS in VSMS",
+    "s6.partner.note": "Uporabite spodnji obrazec ali zgornji e-naslov",
+    "form.title": "Pošljite sporočilo",
+    "form.nameLabel": "Ime",
+    "form.namePlaceholder": "Ana Novak",
+    "form.emailLabel": "E-pošta",
+    "form.roleLabel": "Sem…",
+    "form.role1": "Lekarna ali zdravstveni izvajalec",
+    "form.role2": "Pacient ali negovalec",
+    "form.role3": "Partner ali deležnik projekta",
+    "form.role4": "Drugo",
+    "form.messageLabel": "Sporočilo",
+    "form.messagePlaceholder": "Kako vam lahko pomagamo?",
+    "form.submit": "Pošlji sporočilo",
+    "form.note": "Odpre vašo e-poštno aplikacijo s tem sporočilom, že vnesenim vnaprej.",
+    "footer.euDisclaimer": "Financira Evropska unija (sporazum o dodelitvi sredstev KA210-ADU-0005/2025). Izražena stališča in mnenja so izključno stališča in mnenja avtorja(-ev) in ne odražajo nujno stališč in mnenj Evropske unije ali CMEPIUS. Zanje ne moreta biti odgovorna niti Evropska unija niti organ, ki je sredstva dodelil.",
+    "footer.generalDisclaimer": "ECO CARE ponuja splošne izobraževalne informacije o varni uporabi zdravil in ne nadomešča nasveta vašega farmacevta ali zdravnika. V nujnem primeru pokličite lokalno številko za nujne primere.",
+    "footer.privacy": "Politika zasebnosti",
+    "footer.terms": "Pogoji uporabe",
+    "footer.copyright": "ECO CARE · ZKFS in VSMS",
+    "js.mailtoSubject": "ECO CARE povpraševanje od ",
+    "js.name": "Ime",
+    "js.email": "E-pošta",
+    "js.role": "Vloga",
+    "skip.toContent": "Preskoči na vsebino",
+    "nav.project": "Projekt",
+    "nav.menu": "Meni",
+    "problem.eyebrow": "Resničen problem",
+    "problem.heading": "Kaj gre doma narobe",
+    "problem.cat1": "Drobljenje",
+    "problem.cat2": "Shranjevanje",
+    "problem.cat3": "Odmerjanje",
+    "problem.cat4": "Odstranjevanje",
+    "problem.num1": "01",
+    "problem.num2": "02",
+    "problem.num3": "03",
+    "problem.num4": "04",
+    "pharma.tablabel1": "Drobljenje in deljenje",
+    "pharma.tablabel2": "Čas za nasvet o odstranjevanju",
+    "pharma.tablabel3": "Preostali antibiotiki",
+    "contact.heading": "Pogovorimo se.",
+    "contact.stay.label": "Najhitrejši način za stik",
+    "contact.stay.text": "Sledite ali nam pišite na @ecocare_si_hr na Instagramu.",
+    "connect.eyebrow": "Ostanite povezani",
+    "connect.heading": "Ostanimo povezani",
+    "connect.text": "Spremljajte ECO CARE, medtem ko zdravila delamo varnejša za ljudi — in prijaznejša do narave.",
+    "connect.cta": "Sledite nam na Instagramu",
+    "connect.ariaLabel": "Sledite ECO CARE na Instagramu, odpre se v novem zavihku",
+    "connect.sub": "Sledite @ecocare_si_hr za novice o projektu, praktične nasvete in zakulisje ECO CARE.",
+    "connect.tags": "Novice o projektu · Praktični nasveti · ECO CARE",
+    "why.eyebrow": "Zakaj je to pomembno",
+    "footer.langsLabel": "Na voljo v",
+    "footer.langEn": "Angleščina",
+    "footer.langSl": "Slovenščina",
+    "footer.langHr": "Hrvaščina"
+  },
+  "hr": {
+    "nav.pharmacies": "Ljekarne",
+    "nav.patients": "Pacijenti",
+    "nav.evidence": "Dokazi",
+    "nav.contact": "Kontakt",
+    "hero.eyebrow": "Erasmus+ KA210 · Slovenija i Hrvatska",
+    "hero.h1": "Pametno s lijekovima kod kuće.<br/>Brižno i prema prirodi.",
+    "hero.subhead": "ECO CARE pretvara ono što ljekarnici već znaju o doziranju, čuvanju i zbrinjavanju lijekova u jasne upute — za sve koji kod kuće brinu o lijekovima, i za ljekarne koje im pritom pomažu.",
+    "hero.ctaPharmacies": "Za ljekarne i pružatelje skrbi",
+    "hero.ctaPatients": "Za pacijente i skrbnike",
+    "hero.status": "RP2 u tijeku — pilot radionice, 2026.",
+    "s1.heading": "Što je ECO CARE",
+    "s1.p1": "ECO CARE je Erasmus+ KA210 partnerstvo u obrazovanju odraslih koje traje od 1. studenoga 2025. do 30. travnja 2027. Koordinira ga <strong style=\"color:var(--ink)\">Združenje kliničnih farmacevtov Slovenije (ZKFS)</strong>, slovenska udruga kliničkih ljekarnika, a partner u projektu je hrvatska udruga <strong style=\"color:var(--ink)\">Veliko srce malom srcu</strong>. Projekt se bavi nečim za što u formalnom zdravstvu često nema vremena: što se s lijekom događa <em>nakon</em> što napusti ljekarnički pult — kako se dozira, čuva, dijeli i na kraju zbrinjava, te što to znači za ljude i okoliš oko nas.",
+    "s1.p2": "Prva faza projekta (RP1) prikupila je dokaze od ljekarnika, zdravstvenih djelatnika i pacijenata u obje zemlje. Ti dokazi — sažeti u <a href=\"#evidence\" class=\"underline\">§4</a> — sada oblikuju radionice, videe i ECO CARE priručnik koji nastaju u sklopu RP2.",
+    "s2.eyebrow": "Za ljekarne i zdravstvene djelatnike",
+    "s2.heading": "Podrška u savjetovanju, izgrađena na analizi potreba",
+    "s2.card1.title": "Provjerite prije lomljenja ili drobljenja",
+    "s2.card1.text": "Provjerite označava li urez na tableti doziranje ili samo lakše gutanje, te je li tabletu s produljenim oslobađanjem ili obloženu tabletu uopće sigurno zdrobiti — to je bila najviše isticana tema u anketama obiju zemalja.",
+    "s2.card2.title": "Uputu o zbrinjavanju dajte u pravom trenutku",
+    "s2.card2.text": "Ponudite savjet o vraćanju lijekova pri promjeni terapije, po završetku liječenja i kada pacijent uređuje lijekove preminulog člana obitelji — to su trenuci u kojima je, prema analizi potreba, savjet o zbrinjavanju najpotrebniji, a najrjeđe se daje.",
+    "s2.card3.title": "Posebno upozorite na preostale antibiotike",
+    "s2.card3.text": "Djelomično iskorištene terapije i dječji antibiotski sirupi često se čuvaju \"za sljedeći put\". Podsjetite pacijente da ih vrate u ljekarnu — antibiotski sirupi nakon otvaranja imaju i kratak rok valjanosti.",
+    "s2.callout": "<strong>Upit partnera ili stručno pitanje?</strong> Kontakt podaci nalaze se u <a href=\"#contact\" class=\"underline\">§6</a> — ZKFS i VSMS koordiniraju svakodnevni rad.",
+    "s3.eyebrow": "Za pacijente i skrbnike",
+    "s3.heading": "Pet pravila za lijekove kod kuće",
+    "s3.intro": "Vaš vam je ljekarnik dao ovaj kod jer je ECO CARE nastao upravo da odgovori na ta pitanja. Ne zamjenjuje njegov savjet — isti je savjet, dostupan kad god ga trebate ponovno provjeriti.",
+    "s3.item1.title": "Pitajte prije drobljenja",
+    "s3.item1.text": "Nije svaku tabletu sigurno prepoloviti ili zdrobiti — prvo se posavjetujte s ljekarnikom.",
+    "s3.item2.title": "Pravilno izmjerite tekući lijek",
+    "s3.item2.text": "Koristite špricu ili mjericu koja je isporučena uz lijek, nikada kuhinjsku žlicu.",
+    "s3.item3.title": "Čuvajte izvan dohvata",
+    "s3.item3.text": "Hladno, suho, zaštićeno od svjetla i izvan dohvata djece — ne u kupaonskom ormariću.",
+    "s3.item4.title": "Dovršite ili vratite antibiotike",
+    "s3.item4.text": "Nikada ne čuvajte ostatke \"za svaki slučaj\" i ne dijelite ih s drugima.",
+    "s3.item5.title": "Vratite, ne bacajte i ne izlijevajte",
+    "s3.item5.text": "Neiskorištene ili istekle lijekove vratite u ljekarnu — nikad u smeće, sudoper ili WC.",
+    "s3.why.title": "Zašto je to važno",
+    "s3.why.text": "Lijekovi koji završe u vodi ili tlu štete i divljim životinjama — ne samo ljudima.",
+    "faq.eyebrow": "Često se pita",
+    "faq.heading": "Česta pitanja",
+    "faq.q1": "Mogu li zdrobiti tabletu da je lakše progutam?",
+    "faq.a1": "Ponekad — ali ne uvijek. Urez može značiti \"prepolovite radi doziranja\" ili samo \"lakše gutanje\", a tablete s produljenim oslobađanjem ili obložene tablete često se uopće ne smiju drobiti. Prije toga pitajte ljekarnika.",
+    "faq.q2": "Što učiniti s preostalim antibioticima?",
+    "faq.a2": "Nemojte ih čuvati za kasnije niti ih dijeliti s drugima. Zatvorite pakiranje i vratite ga u bilo koju ljekarnu — ovo je osobito česta situacija s dječjim antibiotskim sirupima, koji se rijetko potroše točno do posljednje doze.",
+    "faq.q3": "Zašto stare lijekove ne smijem jednostavno baciti u smeće ili izliti?",
+    "faq.a3": "Lijekovi izliveni ili bačeni u smeće mogu završiti u tlu i vodotocima, gdje štete divljim vrstama i kvaliteti vode. Vlastita ECO CARE anketa pokazala je da je to u Sloveniji i Hrvatskoj i dalje jedna od najčešćih navika zbrinjavanja — vraćanje u ljekarnu sigurna je alternativa.",
+    "faq.q4": "Gdje vraćam neiskorištene ili istekle lijekove?",
+    "faq.a4": "U Sloveniji lijekove preuzimaju ljekarne, sabirni centri i mobilne sabirnice. U Hrvatskoj ih ljekarne prikupljaju u zatvorenim spremnicima u sklopu nacionalnog sustava povrata — potražite spremnik na šalteru.",
+    "faq.q5": "Je li ovo isto što i upute mog liječnika ili ljekarnika?",
+    "faq.a5": "Nadopunjuje njihov savjet, ne zamjenjuje ga. Vaša uputa uz lijek i vaš ljekarnik uvijek imaju prednost — ECO CARE donosi svakodnevne, praktične detalje za koje na šalteru ljekarne obično nema vremena.",
+    "s4.eyebrow": "Dokazi na kojima počiva ECO CARE",
+    "s4.heading": "Izgrađeno na stvarnoj analizi potreba, ne na nagađanju",
+    "s4.stat1": "odgovora dionika<br/>18 Slovenija · 4 Hrvatska",
+    "s4.stat2": "odgovora pacijenata i skrbnika<br/>12 Slovenija · 8 Hrvatska",
+    "s4.chartTitle": "Koliko često dionici kod kuće uočavaju ove probleme",
+    "s4.chartSub": "Samoprocijenjena učestalost, ljestvica 0 (nikad) – 5 (vrlo često)",
+    "s4.label1": "Neispravno zbrinjavanje lijekova",
+    "s4.label2": "Neodgovarajuće čuvanje",
+    "s4.label3": "Poteškoće pri drobljenju tableta",
+    "s4.label4": "Pogrešno doziranje / mjerenje",
+    "s4.legendSI": "Slovenija",
+    "s4.legendHR": "Hrvatska",
+    "s4.callout": "Nijedan dionik ni u jednoj zemlji nije izjavio da pacijenti u potpunosti razumiju okolišne posljedice neispravnog zbrinjavanja lijekova — to je najsnažniji pojedinačni nalaz analize potreba i razlog zašto je utjecaj na okoliš temeljna tema ECO CARE-a, a ne dodatak.",
+    "s6.eyebrow": "Partneri i kontakt",
+    "s6.heading": "Tko stoji iza ECO CARE-a",
+    "s6.colSI.label": "Slovenija",
+    "s6.colSI.li1": "Združenje kliničnih farmacevtov Slovenije, koordinator projekta",
+    "s6.colSI.li2": "Lekarniška zbornica Slovenije",
+    "s6.colSI.li3": "Nacionalni inštitut za javno zdravje (NIJZ)",
+    "s6.colSI.li4": "Združenje pacientov",
+    "s6.colHR.label": "Hrvatska",
+    "s6.colHR.li1": "partnerska organizacija",
+    "s6.colHR.li2": "Farmaceutsko-biokemijski fakultet Sveučilišta u Zagrebu",
+    "s6.colHR.li3": "Hrvatska ljekarnička komora (HLJK)",
+    "s6.colHR.li4": "Hrvatska udruga medicinskih sestara (HUMS)",
+    "s6.general.label": "Opći upiti",
+    "s6.general.note": "Dostupno na engleskom, slovenskom i hrvatskom jeziku",
+    "s6.partner.label": "Upiti partnera i medija",
+    "s6.partner.text": "Zajednički koordiniraju ZKFS i VSMS",
+    "s6.partner.note": "Koristite obrazac ispod ili gornju adresu",
+    "form.title": "Pošaljite poruku",
+    "form.nameLabel": "Ime",
+    "form.namePlaceholder": "Ana Horvat",
+    "form.emailLabel": "E-pošta",
+    "form.roleLabel": "Ja sam…",
+    "form.role1": "Ljekarna ili zdravstveni djelatnik",
+    "form.role2": "Pacijent ili skrbnik",
+    "form.role3": "Partner ili dionik projekta",
+    "form.role4": "Ostalo",
+    "form.messageLabel": "Poruka",
+    "form.messagePlaceholder": "Kako vam možemo pomoći?",
+    "form.submit": "Pošalji poruku",
+    "form.note": "Otvara vašu aplikaciju za e-poštu s ovom porukom unaprijed ispunjenom.",
+    "footer.euDisclaimer": "Financira Europska unija (Ugovor o dodjeli bespovratnih sredstava KA210-ADU-0005/2025). Izneseni stavovi i mišljenja isključivo su stavovi i mišljenja autora i ne odražavaju nužno stavove i mišljenja Europske unije ili CMEPIUS-a. Ni Europska unija ni tijelo koje je dodijelilo bespovratna sredstva ne mogu se smatrati odgovornima za njih.",
+    "footer.generalDisclaimer": "ECO CARE pruža opće edukativne informacije o sigurnoj uporabi lijekova i ne zamjenjuje savjet vašeg ljekarnika ili liječnika. U hitnom slučaju nazovite lokalni broj za hitne službe.",
+    "footer.privacy": "Politika privatnosti",
+    "footer.terms": "Uvjeti korištenja",
+    "footer.copyright": "ECO CARE · ZKFS i VSMS",
+    "js.mailtoSubject": "ECO CARE upit od ",
+    "js.name": "Ime",
+    "js.email": "E-pošta",
+    "js.role": "Uloga",
+    "skip.toContent": "Preskoči na sadržaj",
+    "nav.project": "Projekt",
+    "nav.menu": "Izbornik",
+    "problem.eyebrow": "Stvaran problem",
+    "problem.heading": "Što kod kuće pođe po zlu",
+    "problem.cat1": "Drobljenje",
+    "problem.cat2": "Čuvanje",
+    "problem.cat3": "Doziranje",
+    "problem.cat4": "Zbrinjavanje",
+    "problem.num1": "01",
+    "problem.num2": "02",
+    "problem.num3": "03",
+    "problem.num4": "04",
+    "pharma.tablabel1": "Drobljenje i lomljenje",
+    "pharma.tablabel2": "Trenutak za savjet o zbrinjavanju",
+    "pharma.tablabel3": "Preostali antibiotici",
+    "contact.heading": "Razgovarajmo.",
+    "contact.stay.label": "Najbrži način da nas kontaktirate",
+    "contact.stay.text": "Pratite ili nam pišite na @ecocare_si_hr na Instagramu.",
+    "connect.eyebrow": "Ostanite povezani",
+    "connect.heading": "Ostanimo povezani",
+    "connect.text": "Pratite ECO CARE dok lijekove činimo sigurnijima za ljude — i boljima za planet.",
+    "connect.cta": "Pratite nas na Instagramu",
+    "connect.ariaLabel": "Pratite ECO CARE na Instagramu, otvara se u novoj kartici",
+    "connect.sub": "Pratite @ecocare_si_hr za novosti o projektu, praktične savjete i pogled iza kulisa ECO CARE-a.",
+    "connect.tags": "Novosti o projektu · Praktični savjeti · ECO CARE",
+    "why.eyebrow": "Zašto je to važno",
+    "footer.langsLabel": "Dostupno na",
+    "footer.langEn": "Engleski",
+    "footer.langSl": "Slovenski",
+    "footer.langHr": "Hrvatski"
+  }
+};
+
+
+document.getElementById('cf-year').textContent = new Date().getFullYear();
+
+var euLogos = {
+  en: { src: "data:image/webp;base64,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", alt: "Funded by the European Union" },
+  sl: { src: "data:image/webp;base64,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", alt: "Financira Evropska unija" },
+  hr: { src: "data:image/webp;base64,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", alt: "Financira Europska unija" }
+};
+
+var currentLang = 'en';
+
+function applyLang(lang){
+  var dict = translations[lang];
+  if(!dict) return;
+  currentLang = lang;
+  document.documentElement.setAttribute('lang', lang);
+
+  document.querySelectorAll('[data-i18n]').forEach(function(el){
+    var key = el.getAttribute('data-i18n');
+    if(dict[key] !== undefined) el.textContent = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+    var key = el.getAttribute('data-i18n-html');
+    if(dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('[data-i18n-attr-placeholder]').forEach(function(el){
+    var key = el.getAttribute('data-i18n-attr-placeholder');
+    if(dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+  });
+  document.querySelectorAll('[data-i18n-attr-aria-label]').forEach(function(el){
+    var key = el.getAttribute('data-i18n-attr-aria-label');
+    if(dict[key] !== undefined) el.setAttribute('aria-label', dict[key]);
+  });
+
+  document.querySelectorAll('.lang-btn').forEach(function(btn){
+    var isActive = btn.getAttribute('data-lang-btn') === lang;
+    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+
+  var eu = euLogos[lang];
+  var euImg = document.getElementById('eu-logo');
+  if(euImg){ euImg.src = eu.src; euImg.alt = eu.alt; }
+
+  var colSI = document.getElementById('col-si');
+  var colHR = document.getElementById('col-hr');
+  if(colSI && colHR){
+    if(lang === 'hr'){ colSI.style.order = 2; colHR.style.order = 1; }
+    else { colSI.style.order = 1; colHR.style.order = 2; }
+  }
+
+  try { localStorage.setItem('ecocare-lang', lang); } catch(e){}
+}
+
+document.querySelectorAll('[data-lang-btn]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    applyLang(btn.getAttribute('data-lang-btn'));
+    closeMobilePanel();
+  });
+});
+
+(function initLang(){
+  var saved = null;
+  try { saved = localStorage.getItem('ecocare-lang'); } catch(e){}
+  var browserLang = (navigator.language || 'en').slice(0,2).toLowerCase();
+  var initial = saved || (translations[browserLang] ? browserLang : 'en');
+  applyLang(initial);
+})();
+
+/* ---------- mobile menu ---------- */
+var menuToggle = document.getElementById('menu-toggle');
+var mobilePanel = document.getElementById('mobile-panel');
+
+function openMobilePanel(){
+  mobilePanel.classList.add('is-open');
+  menuToggle.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobilePanel(){
+  mobilePanel.classList.remove('is-open');
+  menuToggle.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+}
+if(menuToggle){
+  menuToggle.addEventListener('click', function(){
+    var open = menuToggle.getAttribute('aria-expanded') === 'true';
+    if(open) closeMobilePanel(); else openMobilePanel();
+  });
+  mobilePanel.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMobilePanel);
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMobilePanel();
+  });
+}
+
+/* ---------- sticky nav shrink ---------- */
+var nav = document.getElementById('site-nav');
+var lastScrollCheck = false;
+function onScrollNav(){
+  var scrolled = window.scrollY > 12;
+  if(scrolled !== lastScrollCheck){
+    nav.classList.toggle('is-scrolled', scrolled);
+    lastScrollCheck = scrolled;
+  }
+}
+document.addEventListener('scroll', onScrollNav, { passive:true });
+onScrollNav();
+
+/* ---------- active section highlighting ---------- */
+var navLinks = Array.prototype.slice.call(document.querySelectorAll('.nav-link[data-nav-for]'));
+var sections = navLinks.map(function(a){ return document.getElementById(a.getAttribute('data-nav-for')); }).filter(Boolean);
+
+if('IntersectionObserver' in window && sections.length){
+  var navObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link = navLinks.find(function(a){ return a.getAttribute('data-nav-for') === entry.target.id; });
+      if(!link) return;
+      if(entry.isIntersecting) link.setAttribute('aria-current', 'true');
+      else link.removeAttribute('aria-current');
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(function(s){ navObserver.observe(s); });
+}
+
+/* ---------- scroll reveal ---------- */
+var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if('IntersectionObserver' in window && !reduceMotion){
+  var revealObserver = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('[data-reveal], [data-reveal-group]').forEach(function(el){
+    revealObserver.observe(el);
+  });
+} else {
+  document.querySelectorAll('[data-reveal], [data-reveal-group]').forEach(function(el){
+    el.classList.add('is-visible');
+  });
+}
+
+/* ---------- count-up numbers ---------- */
+function animateCount(el){
+  var target = parseInt(el.getAttribute('data-count-to'), 10);
+  if(isNaN(target)) return;
+  if(reduceMotion){ el.textContent = target; return; }
+  var start = null;
+  var duration = 1100;
+  function step(ts){
+    if(start === null) start = ts;
+    var progress = Math.min((ts - start) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if(progress < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+if('IntersectionObserver' in window){
+  var countObserver = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        animateCount(entry.target);
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  document.querySelectorAll('[data-count-to]').forEach(function(el){ countObserver.observe(el); });
+}
+
+/* ---------- animated evidence bars ---------- */
+if('IntersectionObserver' in window){
+  var barObserver = new IntersectionObserver(function(entries, obs){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.querySelectorAll('[data-bar-width]').forEach(function(bar){
+          bar.style.width = bar.getAttribute('data-bar-width') + '%';
+        });
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.evidence-card').forEach(function(el){ barObserver.observe(el); });
+}
+
+/* ---------- pharmacy tabs ---------- */
+var tabButtons = Array.prototype.slice.call(document.querySelectorAll('.tab-btn'));
+var tabPanels = Array.prototype.slice.call(document.querySelectorAll('.pharma-panel'));
+
+function selectTab(index){
+  tabButtons.forEach(function(btn, i){
+    btn.setAttribute('aria-selected', i === index ? 'true' : 'false');
+    btn.tabIndex = i === index ? 0 : -1;
+  });
+  tabPanels.forEach(function(panel, i){
+    panel.classList.toggle('is-active', i === index);
+  });
+}
+
+tabButtons.forEach(function(btn, i){
+  btn.addEventListener('click', function(){ selectTab(i); });
+  btn.addEventListener('keydown', function(e){
+    var next = null;
+    if(e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i + 1) % tabButtons.length;
+    if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (i - 1 + tabButtons.length) % tabButtons.length;
+    if(e.key === 'Home') next = 0;
+    if(e.key === 'End') next = tabButtons.length - 1;
+    if(next !== null){
+      e.preventDefault();
+      selectTab(next);
+      tabButtons[next].focus();
+    }
+  });
+});
+if(tabButtons.length) selectTab(0);
+
+/* ---------- contact form ---------- */
+var contactForm = document.getElementById('contact-form');
+if(contactForm){
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var name = document.getElementById('cf-name').value.trim();
+    var email = document.getElementById('cf-email').value.trim();
+    var role = document.getElementById('cf-role').value;
+    var message = document.getElementById('cf-message').value.trim();
+    if(!name || !email || !message) return;
+
+    var t = translations[currentLang];
+    var subject = encodeURIComponent(t['js.mailtoSubject'] + name);
+    var body = encodeURIComponent(
+      t['js.name'] + ': ' + name + '\n' +
+      t['js.email'] + ': ' + email + '\n' +
+      t['js.role'] + ': ' + role + '\n\n' +
+      message
+    );
+    window.location.href = 'mailto:info@ecocare-project.eu?subject=' + subject + '&body=' + body;
+  });
+}
+
+</script>
+</body>
+</html>
